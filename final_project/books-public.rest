@@ -1,12 +1,24 @@
-@PORT=5000
+@PORT=3000
 
 GET http://localhost:{{PORT}}
 
 ###
-GET http://localhost:{{PORT}}/isbn/3
+GET http://localhost:{{PORT}}/isbn/3000
 
 ###
 GET http://localhost:{{PORT}}/author/unknown
 
 ###
 GET http://localhost:{{PORT}}/title/One Thousand and One Nights
+
+###
+GET http://localhost:{{PORT}}/review/3
+
+###
+POST http://localhost:{{PORT}}/register
+content-type: application/json
+
+{
+  "username": "uname",
+  "password": "pw"
+}

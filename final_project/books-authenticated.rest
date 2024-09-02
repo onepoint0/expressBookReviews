@@ -1,10 +1,10 @@
-@PORT=5000
+@PORT=3000
 
 POST http://localhost:{{PORT}}/register
 content-type: application/json
 
 {
-    "username": "uname",
+    "username": "uname1",
     "password": "pw"
 }
 
@@ -13,6 +13,16 @@ POST http://localhost:{{PORT}}/customer/login
 content-type: application/json
 
 {
-    "username": "uname",
+    "username": "uname1",
     "password": "pw"
 }
+
+###
+PUT http://localhost:{{PORT}}/customer/auth/review/2?review=this is a second review1S
+
+###
+DELETE http://localhost:{{PORT}}/customer/auth/review/2
+
+###
+GET http://localhost:{{PORT}}
+

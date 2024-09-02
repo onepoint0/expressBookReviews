@@ -16,11 +16,11 @@ const authenticatedUser = (username,password)=>{
 regd_users.post("/login", (req,res) => {
   const {username,password} = req.body;
 
-  if (!username || !password) return res.status(404).json({ message: "Please provide username and password" });
+  if (!username || !password) return res.status(409).json({ message: "Please provide username and password" });
 
   if (authenticatedUser(username, password)) {
     let accessToken = jwt.sign({
-      data: password
+      data: username
     }, 'access', { expiresIn: 60 * 60 });
 
     req.session.authorization = {
@@ -28,15 +28,31 @@ regd_users.post("/login", (req,res) => {
     }
     return res.status(200).send("User successfully logged in");
   } else {
-      return res.status(208).json({ message: "Invalid Login. Check username and password" });
+    return res.status(409).json({ message: "Invalid Login. Check username and password" });
   }
 });
 
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  const isbn = req.params.isbn;
+  const review = req.query.review;
+
+  console.log('reviewing... review = ',review);
+
+  books[isbn].reviews = {...books[isbn].reviews, [req.user.data]: review}
+  console.log('review set to ',books[isbn])
+  return res.status(201).json({message: `Review set for ${books[isbn].title}`});
 });
+
+// Delete a book review
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+  const isbn = req.params.isbn;
+
+  delete books[isbn].reviews[req.user.data];
+
+  return res.status(201).json({message: `Review deleted for ${books[isbn].title}`});
+});
+
 
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
